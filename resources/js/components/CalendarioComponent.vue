@@ -114,9 +114,12 @@ export default {
         .get(`/api/eventos`)
         .then((result) => {
           this.isLoading = !this.isLoading;
-          this.calendarOptions.events = result.data;
+          if(result != ""){
+            this.calendarOptions.events = result.data;
+          }
         })
         .catch((err) => {
+          this.isLoading = !this.isLoading;
           console.log("ERROR AXIOS GET");
           console.log(err);
         });
@@ -151,6 +154,7 @@ export default {
           this.getEventos();
         })
         .catch((err) => {
+          this.isLoading = !this.isLoading;
           console.log("ERROR AGREGAR");
         });
     },
@@ -188,6 +192,7 @@ export default {
           this.getEventos();
         })
         .catch((err) => {
+          this.isLoading = !this.isLoading;
           console.log("ERROR EDITAR_EVENTO");
         });
     },
@@ -207,6 +212,7 @@ export default {
           this.getEventos();
         })
         .catch((err) => {
+          this.isLoading = !this.isLoading;
           console.log("ERROR AGREGAR");
         });
     },

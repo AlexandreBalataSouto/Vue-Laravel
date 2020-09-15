@@ -9,7 +9,11 @@ class EventoController extends Controller
 {
     public function index(Request $request){
         $events = Evento::all();
-        return $events;
+        if(count($events) > 0){
+            return $events;
+        }else{
+            return "";
+        }
     }
 
     public function store(Request $request)
