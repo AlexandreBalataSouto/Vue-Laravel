@@ -16,3 +16,8 @@ Route::post('notas', 'NotaController@store');
 Route::get('notas', 'NotaController@index');
 Route::put('notas/{id}','NotaController@update');
 Route::delete('notas/{id}','NotaController@destroy');
+
+Route::post('eventos', 'EventoController@store');
+Route::get('eventos', 'EventoController@index');
+Route::put('eventos/{id}','EventoController@update');
+Route::delete('eventos/{id}','EventoController@destroy');

@@ -20,6 +20,9 @@
                 <li>
                   <router-link :to="{name: 'notas'}">Notas</router-link>
                 </li>
+                <li>
+                  <router-link :to="{name: 'calendario'}">Calendario</router-link>
+                </li>
               </ul>
             </div>
           </div>

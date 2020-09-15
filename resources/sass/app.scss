@@ -4,5 +4,20 @@
 // Variables
 @import 'variables';
 
+//mixin
+@import 'gifLoading';
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+calendario{
+    form{
+        button{
+            float: left;
+        }
+    }
+}
+
+.boxGifLoading{
+    @include boxGifLoading;
+}

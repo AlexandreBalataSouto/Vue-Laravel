@@ -84,10 +84,7 @@ export default {
         });
     },
     agregar() {
-      if (
-        this.nota.nombre.trim() === "" ||
-        this.nota.descripcion.trim() === ""
-      ) {
+      if (this.nota.nombre.trim() === "" || this.nota.descripcion.trim() === "") {
         alert("Debes completar todos los campos antes de guardar");
         return;
       }
@@ -123,6 +120,7 @@ export default {
       this.nota.nombre = item.nombre;
       this.nota.descripcion = item.descripcion;
       this.nota.id = item.id;
+      this.scrollToTop();
     },
     editarNota(nota) {
       let params = {
@@ -140,12 +138,16 @@ export default {
           );
 
           this.notas[index] = result.data;
+          this.notas.unshift(this.notas[index]);
           this.nota = { nombre: "", descripcion: "" };
         })
         .catch((err) => {
           console.log("ERROR EDITAR_NOTA");
         });
     },
+    scrollToTop(){
+      window.scrollTo(0,0);
+    }
   },
 };
 </script>

@@ -21,6 +21,11 @@ export default new Router({
             component: require('./views/Nota').default
         },
         {
+            path: '/calendario',
+            name: 'calendario',
+            component: require('./views/Calendario').default
+        },
+        {
             path: ':slug', //Para pasar parametros
             name: 'post',
             component: require('./views/Post').default,
