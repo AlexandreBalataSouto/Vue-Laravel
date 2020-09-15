@@ -17307,8 +17307,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -17334,11 +17332,11 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         locale: "es",
         editable: true,
         selectable: true,
-        height: 'auto',
-        contentHeight: 'auto',
+        height: "auto",
+        contentHeight: "auto",
         firstDay: 1,
         buttonText: {
-          today: 'Hoy'
+          today: "Hoy"
         }
       },
       newEvent: {
@@ -17387,8 +17385,12 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.isLoading = !this.isLoading;
       axios.get("/api/eventos").then(function (result) {
         _this.isLoading = !_this.isLoading;
-        _this.calendarOptions.events = result.data;
+
+        if (result != "") {
+          _this.calendarOptions.events = result.data;
+        }
       })["catch"](function (err) {
+        _this.isLoading = !_this.isLoading;
         console.log("ERROR AXIOS GET");
         console.log(err);
       });
@@ -17417,6 +17419,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 
         _this2.getEventos();
       })["catch"](function (err) {
+        _this2.isLoading = !_this2.isLoading;
         console.log("ERROR AGREGAR");
       });
     },
@@ -17450,6 +17453,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 
         _this3.getEventos();
       })["catch"](function (err) {
+        _this3.isLoading = !_this3.isLoading;
         console.log("ERROR EDITAR_EVENTO");
       });
     },
@@ -17467,6 +17471,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 
         _this4.getEventos();
       })["catch"](function (err) {
+        _this4.isLoading = !_this4.isLoading;
         console.log("ERROR AGREGAR");
       });
     },
@@ -75379,6 +75384,8 @@ var render = function() {
               [
                 _c("h3", [_vm._v("Editar evento")]),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Titulo")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75389,7 +75396,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "text", placeholder: "Titulo" },
+                  attrs: { type: "text", placeholder: "Lo que sea" },
                   domProps: { value: _vm.newEvent.title },
                   on: {
                     input: function($event) {
@@ -75401,6 +75408,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Fecha inicio")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75411,7 +75420,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "date", placeholder: "Fecha Inicio" },
+                  attrs: { type: "date" },
                   domProps: { value: _vm.newEvent.start },
                   on: {
                     input: function($event) {
@@ -75423,6 +75432,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Fecha fin")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75433,7 +75444,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "date", placeholder: "Fecha Fin" },
+                  attrs: { type: "date" },
                   domProps: { value: _vm.newEvent.end },
                   on: {
                     input: function($event) {
@@ -75445,6 +75456,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Color")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75455,7 +75468,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "color", placeholder: "Color" },
+                  attrs: { type: "color" },
                   domProps: { value: _vm.newEvent.color },
                   on: {
                     input: function($event) {
@@ -75501,6 +75514,8 @@ var render = function() {
               [
                 _c("h3", [_vm._v("Agregar evento")]),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Titulo")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75511,7 +75526,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "text", placeholder: "Titulo" },
+                  attrs: { type: "text" },
                   domProps: { value: _vm.newEvent.title },
                   on: {
                     input: function($event) {
@@ -75523,6 +75538,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Fecha inicio")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75533,7 +75550,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "date", placeholder: "Fecha Inicio" },
+                  attrs: { type: "date" },
                   domProps: { value: _vm.newEvent.start },
                   on: {
                     input: function($event) {
@@ -75545,6 +75562,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Fecha fin")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75555,7 +75574,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "date", placeholder: "Fecha Fin" },
+                  attrs: { type: "date" },
                   domProps: { value: _vm.newEvent.end },
                   on: {
                     input: function($event) {
@@ -75567,6 +75586,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
+                _c("strong", [_vm._v("Color")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -75577,7 +75598,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "color", placeholder: "Color" },
+                  attrs: { type: "color" },
                   domProps: { value: _vm.newEvent.color },
                   on: {
                     input: function($event) {

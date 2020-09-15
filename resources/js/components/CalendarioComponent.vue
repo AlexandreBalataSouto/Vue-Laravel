@@ -3,15 +3,14 @@
     <div class="col-md-12">
       <form @submit.prevent="editarEvento(newEvent)" v-if="isEditing">
         <h3>Editar evento</h3>
-        <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="newEvent.title" />
-        <input
-          type="date"
-          placeholder="Fecha Inicio"
-          class="form-control mb-2"
-          v-model="newEvent.start"
-        />
-        <input type="date" placeholder="Fecha Fin" class="form-control mb-2" v-model="newEvent.end" />
-        <input type="color" placeholder="Color" class="form-control mb-2" v-model="newEvent.color" />
+        <strong>Titulo</strong>
+        <input type="text" placeholder="Lo que sea" class="form-control mb-2" v-model="newEvent.title" />
+        <strong>Fecha inicio</strong>
+        <input type="date" class="form-control mb-2" v-model="newEvent.start" />
+        <strong>Fecha fin</strong>
+        <input type="date" class="form-control mb-2" v-model="newEvent.end" />
+        <strong>Color</strong>
+        <input type="color" class="form-control mb-2" v-model="newEvent.color" />
 
         <button class="btn btn-warning" type="submit">Editar</button>
         <button class="btn btn-danger" type="button" @click="eliminarEvento(newEvent.id)">Borrar</button>
@@ -19,15 +18,14 @@
 
       <form @submit.prevent="agregarEvento" v-else>
         <h3>Agregar evento</h3>
-        <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="newEvent.title" />
-        <input
-          type="date"
-          placeholder="Fecha Inicio"
-          class="form-control mb-2"
-          v-model="newEvent.start"
-        />
-        <input type="date" placeholder="Fecha Fin" class="form-control mb-2" v-model="newEvent.end" />
-        <input type="color" placeholder="Color" class="form-control mb-2" v-model="newEvent.color" />
+        <strong>Titulo</strong>
+        <input type="text" class="form-control mb-2" v-model="newEvent.title" />
+        <strong>Fecha inicio</strong>
+        <input type="date" class="form-control mb-2" v-model="newEvent.start" />
+        <strong>Fecha fin</strong>
+        <input type="date" class="form-control mb-2" v-model="newEvent.end" />
+        <strong>Color</strong>
+        <input type="color" class="form-control mb-2" v-model="newEvent.color" />
 
         <button class="btn btn-primary" type="submit">Agregar</button>
       </form>
@@ -66,16 +64,16 @@ export default {
         locale: "es",
         editable: true,
         selectable: true,
-        height: 'auto',
-        contentHeight:'auto',
-        firstDay:1,
-        buttonText:{
-                today: 'Hoy',
-            },
+        height: "auto",
+        contentHeight: "auto",
+        firstDay: 1,
+        buttonText: {
+          today: "Hoy",
+        },
       },
       newEvent: { title: "", start: "", end: "", color: "" },
       isEditing: false,
-      isLoading:false
+      isLoading: false,
     };
   },
   created() {
@@ -88,24 +86,28 @@ export default {
     handleEventClick(clickInfo) {
       this.editar(clickInfo.event);
     },
-    handleEventDrop(info){
+    handleEventDrop(info) {
       let param = {
         id: info.event.id,
         title: info.event.title,
         start: moment(info.event.start).format("yyyy-MM-DD"),
-        end: moment(info.event.end).isValid() ? moment(info.event.end).format("yyyy-MM-DD") : moment(info.event.start).format("yyyy-MM-DD"),
+        end: moment(info.event.end).isValid()
+          ? moment(info.event.end).format("yyyy-MM-DD")
+          : moment(info.event.start).format("yyyy-MM-DD"),
         color: info.event.color,
-      }
+      };
       this.editarEvento(param);
     },
-    handleEventResize(info){
+    handleEventResize(info) {
       let param = {
         id: info.event.id,
         title: info.event.title,
         start: moment(info.event.start).format("yyyy-MM-DD"),
-        end: moment(info.event.end).isValid() ? moment(info.event.end).format("yyyy-MM-DD") : moment(info.event.start).format("yyyy-MM-DD"),
+        end: moment(info.event.end).isValid()
+          ? moment(info.event.end).format("yyyy-MM-DD")
+          : moment(info.event.start).format("yyyy-MM-DD"),
         color: info.event.color,
-      }
+      };
       this.editarEvento(param);
     },
     getEventos() {
@@ -114,7 +116,7 @@ export default {
         .get(`/api/eventos`)
         .then((result) => {
           this.isLoading = !this.isLoading;
-          if(result != ""){
+          if (result != "") {
             this.calendarOptions.events = result.data;
           }
         })
