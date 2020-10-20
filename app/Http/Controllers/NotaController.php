@@ -9,7 +9,7 @@ class NotaController extends Controller
 {
     public function index(Request $request)
     {
-        return Nota::orderBy('updated_at')->paginate(3);
+        return Nota::orderBy('updated_at','DESC')->paginate(3);
     }
 
     public function store(Request $request)
