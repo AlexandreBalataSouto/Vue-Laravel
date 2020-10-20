@@ -17628,9 +17628,11 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
           return item.id === result.data.id;
         });
 
-        _this4.notas[index] = result.data;
+        _this4.notas.splice(index, 1);
 
-        _this4.notas.unshift(_this4.notas[index]);
+        console.log(result.data);
+
+        _this4.notas.unshift(result.data);
 
         _this4.nota = {
           nombre: "",
@@ -75396,7 +75398,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control mb-2",
-                  attrs: { type: "text", placeholder: "Lo que sea" },
+                  attrs: { type: "text" },
                   domProps: { value: _vm.newEvent.title },
                   on: {
                     input: function($event) {

@@ -4,7 +4,7 @@
       <form @submit.prevent="editarEvento(newEvent)" v-if="isEditing">
         <h3>Editar evento</h3>
         <strong>Titulo</strong>
-        <input type="text" placeholder="Lo que sea" class="form-control mb-2" v-model="newEvent.title" />
+        <input type="text" class="form-control mb-2" v-model="newEvent.title" />
         <strong>Fecha inicio</strong>
         <input type="date" class="form-control mb-2" v-model="newEvent.start" />
         <strong>Fecha fin</strong>

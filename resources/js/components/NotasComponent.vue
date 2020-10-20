@@ -137,9 +137,11 @@ export default {
             (item) => item.id === result.data.id
           );
 
-          this.notas[index] = result.data;
-          this.notas.unshift(this.notas[index]);
+          this.notas.splice(index,1);
+          console.log(result.data);
+          this.notas.unshift(result.data);
           this.nota = { nombre: "", descripcion: "" };
+
         })
         .catch((err) => {
           console.log("ERROR EDITAR_NOTA");
