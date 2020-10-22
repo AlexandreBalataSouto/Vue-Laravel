@@ -11,6 +11,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('posts', 'PostController@index');
 Route::get('post/{slug}', 'PostController@show');
+Route::post('posts', 'PostController@store');
+Route::get('posts', 'PostController@index');
+Route::put('posts/{id}','PostController@update');
+Route::delete('posts/{id}','PostController@destroy');
 
 Route::post('notas', 'NotaController@store');
 Route::get('notas', 'NotaController@index');

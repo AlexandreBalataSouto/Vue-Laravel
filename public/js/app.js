@@ -17679,10 +17679,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      moment: moment,
       list: [],
+      post: {
+        title: "",
+        body: ""
+      },
+      isEditing: false,
       page: 0
     };
   },
@@ -17702,8 +17775,73 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (err) {
         console.log("ERROR AXIOS GET");
-        console.log(err);
       });
+    },
+    agregar: function agregar() {
+      var _this2 = this;
+
+      if (this.post.title.trim() === "" || this.post.body.trim() === "") {
+        alert("Debes completar todos los campos antes de guardar");
+        return;
+      }
+
+      var params = {
+        title: this.post.title,
+        body: this.post.body
+      };
+      this.post.title = "";
+      this.post.body = "";
+      axios.post("/api/posts", params).then(function (result) {
+        _this2.list.unshift(result.data);
+      })["catch"](function (err) {
+        console.log("ERROR AGREGAR");
+      });
+    },
+    eliminar: function eliminar(item, index) {
+      var _this3 = this;
+
+      axios["delete"]("/api/posts/".concat(item.id)).then(function () {
+        _this3.list.splice(index, 1);
+      })["catch"](function (err) {
+        console.log("ERROR ELIMINAR");
+      });
+    },
+    editar: function editar(item) {
+      this.isEditing = true;
+      this.post.title = item.title;
+      this.post.body = item.body;
+      this.post.id = item.id;
+      this.scrollToTop();
+    },
+    editarPost: function editarPost(post) {
+      var _this4 = this;
+
+      var params = {
+        id: this.post.id,
+        title: this.post.title,
+        body: this.post.body
+      };
+      axios.put("api/posts/".concat(params.id), params).then(function (result) {
+        _this4.isEditing = false;
+
+        var index = _this4.list.findIndex(function (item) {
+          return item.id === result.data.id;
+        });
+
+        _this4.list.splice(index, 1);
+
+        _this4.list.unshift(result.data);
+
+        _this4.post = {
+          title: "",
+          body: ""
+        };
+      })["catch"](function (err) {
+        console.log("ERROR EDITAR_POST");
+      });
+    },
+    scrollToTop: function scrollToTop() {
+      window.scrollTo(0, 0);
     }
   }
 });
@@ -17719,7 +17857,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -75256,18 +75393,6 @@ var render = function() {
                       [
                         _c(
                           "router-link",
-                          { attrs: { to: { name: "notas" } } },
-                          [_vm._v("Notas")]
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      [
-                        _c(
-                          "router-link",
                           { attrs: { to: { name: "calendario" } } },
                           [_vm._v("Calendario")]
                         )
@@ -75939,26 +76064,218 @@ var render = function() {
       "div",
       { staticClass: "col-md-12" },
       [
-        _vm._l(_vm.list, function(item) {
-          return _c(
-            "div",
-            { key: item.id, staticClass: "card mb-3 mt-3" },
-            [
-              _c("router-link", {
-                staticClass: "card-header",
-                attrs: { to: { name: "post", params: { slug: item.slug } } },
-                domProps: { textContent: _vm._s(item.title) }
-              }),
+        _vm.isEditing
+          ? _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.editarPost(_vm.post)
+                  }
+                }
+              },
+              [
+                _c("h3", [_vm._v("Editar post")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.post.title,
+                      expression: "post.title"
+                    }
+                  ],
+                  staticClass: "form-control mb-2",
+                  attrs: { type: "text", placeholder: "Titulo" },
+                  domProps: { value: _vm.post.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.post, "title", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.post.body,
+                      expression: "post.body"
+                    }
+                  ],
+                  staticClass: "form-control mb-2",
+                  attrs: { rows: "3" },
+                  domProps: { value: _vm.post.body },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.post, "body", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-warning", attrs: { type: "submit" } },
+                  [_vm._v("Editar")]
+                )
+              ]
+            )
+          : _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.agregar($event)
+                  }
+                }
+              },
+              [
+                _c("h3", [_vm._v("Agregar post")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.post.title,
+                      expression: "post.title"
+                    }
+                  ],
+                  staticClass: "form-control mb-2",
+                  attrs: { type: "text", placeholder: "Titulo" },
+                  domProps: { value: _vm.post.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.post, "title", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.post.body,
+                      expression: "post.body"
+                    }
+                  ],
+                  staticClass: "form-control mb-2",
+                  attrs: { rows: "3" },
+                  domProps: { value: _vm.post.body },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.post, "body", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                  [_vm._v("Agregar")]
+                )
+              ]
+            ),
+        _vm._v(" "),
+        _c("hr", { staticClass: "mt-3" }),
+        _vm._v(" "),
+        _vm._l(_vm.list, function(post, index) {
+          return _c("div", { key: index, staticClass: "card mb-3 mt-3" }, [
+            _c(
+              "div",
+              { staticClass: "card-header" },
+              [
+                _c("router-link", {
+                  attrs: { to: { name: "post", params: { slug: post.slug } } },
+                  domProps: { textContent: _vm._s(post.title) }
+                }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    staticClass: "badge float-right",
+                    class: [
+                      _vm
+                        .moment(post.updated_at)
+                        .locale("es")
+                        .format("L") >=
+                      _vm
+                        .moment()
+                        .locale("es")
+                        .format("L")
+                        ? "badge-primary"
+                        : "badge-secondary"
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      "\n          " +
+                        _vm._s(
+                          _vm
+                            .moment(post.updated_at)
+                            .locale("es")
+                            .format("L")
+                        ) +
+                        "\n        "
+                    )
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("p", {
+                staticClass: "card-text",
+                domProps: { textContent: _vm._s(post.exc) }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning btn-sm",
+                  on: {
+                    click: function($event) {
+                      return _vm.editar(post)
+                    }
+                  }
+                },
+                [_vm._v("\n          Editar\n        ")]
+              ),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("p", {
-                  staticClass: "card-text",
-                  domProps: { textContent: _vm._s(item.exc) }
-                })
-              ])
-            ],
-            1
-          )
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger btn-sm float-right",
+                  on: {
+                    click: function($event) {
+                      return _vm.eliminar(post, index)
+                    }
+                  }
+                },
+                [_vm._v("\n          Eliminar\n        ")]
+              )
+            ])
+          ])
         }),
         _vm._v(" "),
         _c("infiniteLoading", { on: { infinite: _vm.infiniteHandler } }, [
@@ -76186,8 +76503,6 @@ var render = function() {
           "div",
           { staticClass: "col-md-8" },
           [
-            _c("p", { domProps: { textContent: _vm._s(_vm.post.exc) } }),
-            _vm._v(" "),
             _c("div", { domProps: { innerHTML: _vm._s(_vm.post.body) } }),
             _vm._v(" "),
             _c("hr"),

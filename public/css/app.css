@@ -10920,3 +10920,7 @@ calendario form button {
   display: flex;
 }
 
+textarea {
+  resize: none;
+}
+

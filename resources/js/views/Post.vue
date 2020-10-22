@@ -9,7 +9,6 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8">
-          <p v-text="post.exc"></p>
           <div v-html="post.body"></div>
           <hr />
           <h3>Otros articulos</h3>
