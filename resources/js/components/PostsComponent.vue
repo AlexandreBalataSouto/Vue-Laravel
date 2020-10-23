@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <div class="col-md-12">
+      <button class="btn btn-secondary btn-block" @click="agregar()" v-if="!isAdding && !isEditing">Nuevo Post</button>
+    </div>
+    <div class="col-md-12 mt-2">
       <form @submit.prevent="editarPost(post)" v-if="isEditing">
         <h3>Editar post</h3>
         <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="post.title"/>
@@ -8,7 +11,7 @@
         <button class="btn btn-warning" type="submit">Editar</button>
       </form>
 
-      <form @submit.prevent="agregar" v-else>
+      <form @submit.prevent="agregarPost()" v-if="isAdding">
         <h3>Agregar post</h3>
         <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="post.title"/>
         <textarea class="form-control mb-2" rows="3" v-model="post.body"></textarea>
@@ -48,6 +51,7 @@
         <div slot="no-more">---</div>
         <div slot="no-result">Sin resultados</div>
       </infiniteLoading>
+      <loading v-if="isLoading"></loading>
     </div>
   </div>
 </template>
@@ -62,6 +66,8 @@ export default {
       list: [],
       post: { id: "", title: "", body: "" },
       isEditing: false,
+      isAdding: false,
+      isLoading: false,
       page: 0,
     };
   },
@@ -85,11 +91,16 @@ export default {
           console.log("ERROR AXIOS GET");
         });
     },
-    agregar() {
+    agregar(){
+      this.isAdding = true;
+      this.scrollToTop();
+    },
+    agregarPost() {
       if (this.post.title.trim() === "" || this.post.body.trim() === "") {
         alert("Debes completar todos los campos antes de guardar");
         return;
       }
+      this.isLoading = !this.isLoading;
 
       let params = {
         title: this.post.title,
@@ -101,16 +112,20 @@ export default {
       axios
         .post("/api/posts", params)
         .then((result) => {
-          this.list.unshift(result.data);
+            this.isLoading = !this.isLoading;
+            this.isAdding = false;
+            this.list.unshift(result.data);
         })
         .catch((err) => {
           console.log("ERROR AGREGAR");
         });
     },
     eliminar(item, index) {
+      this.isLoading = !this.isLoading;
       axios
         .delete(`/api/posts/${item.id}`)
         .then(() => {
+          this.isLoading = !this.isLoading;
           this.list.splice(index, 1);
         })
         .catch((err) => {
@@ -122,21 +137,20 @@ export default {
       this.post.title = item.title;
       this.post.body = item.body;
       this.post.id = item.id;
-      console.log()
       this.scrollToTop();
     },
     editarPost(post) {
+      this.isLoading = !this.isLoading;
       let params = {
         id: this.post.id,
         title: this.post.title,
         body: this.post.body,
       };
 
-      console.log(params);
-
       axios
         .put(`api/posts/${params.id}`, params)
         .then((result) => {
+          this.isLoading = !this.isLoading;
           this.isEditing = false;
           let index = this.list.findIndex((item) => item.id === result.data.id);
 

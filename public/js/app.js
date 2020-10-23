@@ -17307,6 +17307,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -17345,6 +17348,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         end: "",
         color: ""
       },
+      isAdding: false,
       isEditing: false,
       isLoading: false
     };
@@ -17395,6 +17399,10 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         console.log(err);
       });
     },
+    agregar: function agregar() {
+      this.isAdding = true;
+      this.scrollToTop();
+    },
     agregarEvento: function agregarEvento() {
       var _this2 = this;
 
@@ -17415,6 +17423,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.newEvent.end = "";
       this.newEvent.color = "";
       axios.post("/api/eventos", params).then(function (result) {
+        _this2.isAdding = false;
         _this2.isLoading = !_this2.isLoading;
 
         _this2.getEventos();
@@ -17713,6 +17722,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17726,6 +17739,8 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         body: ""
       },
       isEditing: false,
+      isAdding: false,
+      isLoading: false,
       page: 0
     };
   },
@@ -17748,6 +17763,10 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       });
     },
     agregar: function agregar() {
+      this.isAdding = true;
+      this.scrollToTop();
+    },
+    agregarPost: function agregarPost() {
       var _this2 = this;
 
       if (this.post.title.trim() === "" || this.post.body.trim() === "") {
@@ -17755,6 +17774,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         return;
       }
 
+      this.isLoading = !this.isLoading;
       var params = {
         title: this.post.title,
         body: this.post.body
@@ -17762,6 +17782,9 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.post.title = "";
       this.post.body = "";
       axios.post("/api/posts", params).then(function (result) {
+        _this2.isLoading = !_this2.isLoading;
+        _this2.isAdding = false;
+
         _this2.list.unshift(result.data);
       })["catch"](function (err) {
         console.log("ERROR AGREGAR");
@@ -17770,7 +17793,10 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     eliminar: function eliminar(item, index) {
       var _this3 = this;
 
+      this.isLoading = !this.isLoading;
       axios["delete"]("/api/posts/".concat(item.id)).then(function () {
+        _this3.isLoading = !_this3.isLoading;
+
         _this3.list.splice(index, 1);
       })["catch"](function (err) {
         console.log("ERROR ELIMINAR");
@@ -17781,19 +17807,19 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.post.title = item.title;
       this.post.body = item.body;
       this.post.id = item.id;
-      console.log();
       this.scrollToTop();
     },
     editarPost: function editarPost(post) {
       var _this4 = this;
 
+      this.isLoading = !this.isLoading;
       var params = {
         id: this.post.id,
         title: this.post.title,
         body: this.post.body
       };
-      console.log(params);
       axios.put("api/posts/".concat(params.id), params).then(function (result) {
+        _this4.isLoading = !_this4.isLoading;
         _this4.isEditing = false;
 
         var index = _this4.list.findIndex(function (item) {
@@ -75465,9 +75491,26 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      !_vm.isAdding && !_vm.isEditing
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-block",
+              on: {
+                click: function($event) {
+                  return _vm.agregar()
+                }
+              }
+            },
+            [_vm._v("Nuevo Evento")]
+          )
+        : _vm._e()
+    ]),
+    _vm._v(" "),
     _c(
       "div",
-      { staticClass: "col-md-12" },
+      { staticClass: "col-md-12 mt-2" },
       [
         _vm.isEditing
           ? _c(
@@ -75600,7 +75643,10 @@ var render = function() {
                 )
               ]
             )
-          : _c(
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isAdding
+          ? _c(
               "form",
               {
                 on: {
@@ -75715,7 +75761,8 @@ var render = function() {
                   [_vm._v("Agregar")]
                 )
               ]
-            ),
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c("hr", { staticClass: "mt-3" }),
         _vm._v(" "),
@@ -76032,9 +76079,26 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      !_vm.isAdding && !_vm.isEditing
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-block",
+              on: {
+                click: function($event) {
+                  return _vm.agregar()
+                }
+              }
+            },
+            [_vm._v("Nuevo Post")]
+          )
+        : _vm._e()
+    ]),
+    _vm._v(" "),
     _c(
       "div",
-      { staticClass: "col-md-12" },
+      { staticClass: "col-md-12 mt-2" },
       [
         _vm.isEditing
           ? _c(
@@ -76101,13 +76165,16 @@ var render = function() {
                 )
               ]
             )
-          : _c(
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isAdding
+          ? _c(
               "form",
               {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    return _vm.agregar($event)
+                    return _vm.agregarPost()
                   }
                 }
               },
@@ -76164,7 +76231,8 @@ var render = function() {
                   [_vm._v("Agregar")]
                 )
               ]
-            ),
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c("hr", { staticClass: "mt-3" }),
         _vm._v(" "),
@@ -76258,7 +76326,9 @@ var render = function() {
           _c("div", { attrs: { slot: "no-result" }, slot: "no-result" }, [
             _vm._v("Sin resultados")
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.isLoading ? _c("loading") : _vm._e()
       ],
       2
     )

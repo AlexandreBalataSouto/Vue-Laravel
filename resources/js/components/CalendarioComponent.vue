@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <div class="col-md-12">
+      <button class="btn btn-secondary btn-block" @click="agregar()" v-if="!isAdding && !isEditing">Nuevo Evento</button>
+    </div>
+    <div class="col-md-12 mt-2">
       <form @submit.prevent="editarEvento(newEvent)" v-if="isEditing">
         <h3>Editar evento</h3>
         <strong>Titulo</strong>
@@ -16,7 +19,7 @@
         <button class="btn btn-danger" type="button" @click="eliminarEvento(newEvent.id)">Borrar</button>
       </form>
 
-      <form @submit.prevent="agregarEvento" v-else>
+      <form @submit.prevent="agregarEvento" v-if="isAdding">
         <h3>Agregar evento</h3>
         <strong>Titulo</strong>
         <input type="text" class="form-control mb-2" v-model="newEvent.title" />
@@ -72,6 +75,7 @@ export default {
         },
       },
       newEvent: { title: "", start: "", end: "", color: "" },
+      isAdding : false,
       isEditing: false,
       isLoading: false,
     };
@@ -126,6 +130,10 @@ export default {
           console.log(err);
         });
     },
+    agregar(){
+      this.isAdding = true;
+      this.scrollToTop();
+    },
     agregarEvento() {
       if (
         this.newEvent.title.trim() === "" ||
@@ -152,6 +160,7 @@ export default {
       axios
         .post("/api/eventos", params)
         .then((result) => {
+          this.isAdding = false;
           this.isLoading = !this.isLoading;
           this.getEventos();
         })
