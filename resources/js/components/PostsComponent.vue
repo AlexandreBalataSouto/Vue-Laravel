@@ -3,58 +3,30 @@
     <div class="col-md-12">
       <form @submit.prevent="editarPost(post)" v-if="isEditing">
         <h3>Editar post</h3>
-        <input
-          type="text"
-          placeholder="Titulo"
-          class="form-control mb-2"
-          v-model="post.title"
-        />
-        <textarea
-          class="form-control mb-2"
-          rows="3"
-          v-model="post.body"
-        ></textarea>
+        <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="post.title"/>
+        <textarea class="form-control mb-2" rows="3" v-model="post.body"></textarea>
         <button class="btn btn-warning" type="submit">Editar</button>
       </form>
 
       <form @submit.prevent="agregar" v-else>
         <h3>Agregar post</h3>
-        <input
-          type="text"
-          placeholder="Titulo"
-          class="form-control mb-2"
-          v-model="post.title"
-        />
-        <textarea
-          class="form-control mb-2"
-          rows="3"
-          v-model="post.body"
-        ></textarea>
+        <input type="text" placeholder="Titulo" class="form-control mb-2" v-model="post.title"/>
+        <textarea class="form-control mb-2" rows="3" v-model="post.body"></textarea>
         <button class="btn btn-primary" type="submit">Agregar</button>
       </form>
 
       <hr class="mt-3" />
 
-      <div
-        class="card mb-3 mt-3"
-        v-for="(post, index) in list"
-        :key="index"
-      >
+      <div class="card mb-3 mt-3" v-for="(post, index) in list" :key="index">
         <div class="card-header">
-          <router-link
-            :to="{ name: 'post', params: { slug: post.slug } }"
-            v-text="post.title"
-          >
+          <router-link :to="{ name: 'post', params: { slug: post.slug } }" v-text="post.title">
           </router-link>
-          <span
-            class="badge float-right"
-            v-bind:class="[
+          <span class="badge float-right" v-bind:class="[
               moment(post.updated_at).locale('es').format('L') >=
               moment().locale('es').format('L')
                 ? 'badge-primary'
                 : 'badge-secondary',
-            ]"
-          >
+            ]">
             {{ moment(post.updated_at).locale("es").format("L") }}
           </span>
         </div>
@@ -66,10 +38,7 @@
           <button class="btn btn-warning btn-sm" @click="editar(post)">
             Editar
           </button>
-          <button
-            class="btn btn-danger btn-sm float-right"
-            @click="eliminar(post, index)"
-          >
+          <button class="btn btn-danger btn-sm float-right" @click="eliminar(post, index)">
             Eliminar
           </button>
         </div>
@@ -91,7 +60,7 @@ export default {
     return {
       moment: moment,
       list: [],
-      post: { title: "", body: "" },
+      post: { id: "", title: "", body: "" },
       isEditing: false,
       page: 0,
     };
@@ -153,6 +122,7 @@ export default {
       this.post.title = item.title;
       this.post.body = item.body;
       this.post.id = item.id;
+      console.log()
       this.scrollToTop();
     },
     editarPost(post) {
@@ -161,6 +131,8 @@ export default {
         title: this.post.title,
         body: this.post.body,
       };
+
+      console.log(params);
 
       axios
         .put(`api/posts/${params.id}`, params)

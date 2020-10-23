@@ -21,21 +21,21 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
-        $post = $request->all();
+        $data = $request->all();
 
-        if (strlen($post['body']) >= 300) {
-            $exc = substr($post['body'], 0, - (strlen($post['body']) / 2));
+        if (strlen($data['body']) > 300) {
+            $exc = substr($data['body'], 0, -(strlen($data['body']) - 300));
             $exc .= '...';
         } else {
-            $exc = $post['body'];
+            $exc = $data['body'];
         }
-        $post['exc'] = $exc;
+        $data['exc'] = $exc;
 
-        Post::create([
-            'title' => $post['title'],
-            'slug'  => Str::slug($post['title']),
-            'exc'   => $post['exc'],
-            'body'  => $post['body']
+        $post = Post::create([
+            'title' => $data['title'],
+            'slug'  => Str::slug($data['title']),
+            'exc'   => $data['exc'],
+            'body'  => $data['body']
         ]);
 
         return $post;
@@ -47,8 +47,8 @@ class PostController extends Controller
         $post = Post::find($id);
         $data = $request->all();
 
-        if (strlen($data['body']) >= 300) {
-            $exc = substr($data['body'], 0, - (strlen($data['body']) / 2));
+        if (strlen($data['body']) > 300) {
+            $exc = substr($data['body'], 0, -(strlen($data['body']) - 300));
             $exc .= '...';
         } else {
             $exc = $data['body'];

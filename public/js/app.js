@@ -17713,37 +17713,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17752,6 +17721,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       moment: moment,
       list: [],
       post: {
+        id: "",
         title: "",
         body: ""
       },
@@ -17811,6 +17781,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       this.post.title = item.title;
       this.post.body = item.body;
       this.post.id = item.id;
+      console.log();
       this.scrollToTop();
     },
     editarPost: function editarPost(post) {
@@ -17821,6 +17792,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         title: this.post.title,
         body: this.post.body
       };
+      console.log(params);
       axios.put("api/posts/".concat(params.id), params).then(function (result) {
         _this4.isEditing = false;
 
