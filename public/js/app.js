@@ -76255,7 +76255,7 @@ var render = function() {
                       _vm
                         .moment(post.updated_at)
                         .locale("es")
-                        .format("L") >=
+                        .format("L") <=
                       _vm
                         .moment()
                         .locale("es")

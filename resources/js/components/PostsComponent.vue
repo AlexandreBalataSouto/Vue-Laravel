@@ -25,7 +25,7 @@
           <router-link :to="{ name: 'post', params: { slug: post.slug } }" v-text="post.title">
           </router-link>
           <span class="badge float-right" v-bind:class="[
-              moment(post.updated_at).locale('es').format('L') >=
+              moment(post.updated_at).locale('es').format('L') <=
               moment().locale('es').format('L')
                 ? 'badge-primary'
                 : 'badge-secondary',
